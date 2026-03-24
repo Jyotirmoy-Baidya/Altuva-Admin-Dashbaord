@@ -39,8 +39,9 @@ function ImageCropper({ onCropComplete, onCancel, imageFile }: ImageCropperProps
         const scaleX = image.naturalWidth / image.width;
         const scaleY = image.naturalHeight / image.height;
 
-        canvas.width = completedCrop.width;
-        canvas.height = completedCrop.height;
+        // Set canvas to full resolution to maintain quality
+        canvas.width = completedCrop.width * scaleX;
+        canvas.height = completedCrop.height * scaleY;
         const ctx = canvas.getContext('2d');
 
         if (!ctx) {
@@ -55,8 +56,8 @@ function ImageCropper({ onCropComplete, onCancel, imageFile }: ImageCropperProps
             completedCrop.height * scaleY,
             0,
             0,
-            completedCrop.width,
-            completedCrop.height
+            completedCrop.width * scaleX,
+            completedCrop.height * scaleY
         );
 
         return new Promise<File>((resolve) => {
@@ -68,7 +69,7 @@ function ImageCropper({ onCropComplete, onCancel, imageFile }: ImageCropperProps
                     type: imageFile.type,
                 });
                 resolve(file);
-            }, imageFile.type);
+            }, imageFile.type, 1.0);
         });
     }, [completedCrop, imageFile]);
 
@@ -142,6 +143,7 @@ function ImageCropper({ onCropComplete, onCancel, imageFile }: ImageCropperProps
 
                 <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                     <button
+                        type="button"
                         onClick={onCancel}
                         style={{
                             padding: '10px 20px',
@@ -155,6 +157,7 @@ function ImageCropper({ onCropComplete, onCancel, imageFile }: ImageCropperProps
                         Cancel
                     </button>
                     <button
+                        type="button"
                         onClick={handleCropComplete}
                         style={{
                             padding: '10px 20px',
