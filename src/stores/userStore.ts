@@ -10,6 +10,7 @@ interface UserState {
     isAuthenticated: boolean;
     isLoading: boolean;
     error: string | null;
+    _hasHydrated: boolean;
 
     // Actions
     login: (email: string, password: string) => Promise<void>;
@@ -19,6 +20,7 @@ interface UserState {
     setToken: (token: string | null) => void;
     clearError: () => void;
     initializeAuth: () => void;
+    setHasHydrated: (val: boolean) => void;
 }
 
 const useUserStore = create<UserState>()(
@@ -29,6 +31,8 @@ const useUserStore = create<UserState>()(
             isAuthenticated: false,
             isLoading: false,
             error: null,
+            _hasHydrated: false,
+            setHasHydrated: (val: boolean) => set({ _hasHydrated: val }),
 
             // Initialize auth from localStorage
             initializeAuth: () => {
@@ -148,6 +152,9 @@ const useUserStore = create<UserState>()(
                 token: state.token,
                 isAuthenticated: state.isAuthenticated,
             }),
+            onRehydrateStorage: () => (state) => {
+                state?.setHasHydrated(true);
+            },
         }
     )
 );

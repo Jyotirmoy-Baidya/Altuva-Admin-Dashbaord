@@ -4,7 +4,12 @@ import useUserStore from '../stores/userStore';
 import { ROUTES } from '../constants/routes';
 
 function DashboardLayout() {
-    const { isAuthenticated } = useUserStore();
+    const { isAuthenticated, _hasHydrated } = useUserStore();
+
+    // Wait for Zustand persist to rehydrate from localStorage
+    if (!_hasHydrated) {
+        return null;
+    }
 
     // Protected route - redirect to login if not authenticated
     if (!isAuthenticated) {

@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useUserStore from '../../stores/userStore';
 import { ROUTES } from '../../constants/routes';
 
@@ -17,7 +17,13 @@ const sidebarItems: SidebarItem[] = [
 
 function Sidebar() {
     const location = useLocation();
-    const { user } = useUserStore();
+    const navigate = useNavigate();
+    const { user, logout } = useUserStore();
+
+    const handleLogout = () => {
+        logout();
+        navigate(ROUTES.LOGIN);
+    };
 
     return (
         <aside
@@ -112,6 +118,25 @@ function Sidebar() {
                             Pending Approval
                         </div>
                     )}
+                    <button
+                        onClick={handleLogout}
+                        style={{
+                            marginTop: '12px',
+                            width: '100%',
+                            padding: '8px',
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            color: 'white',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '13px',
+                            textAlign: 'left',
+                        }}
+                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                    >
+                        Logout
+                    </button>
                 </div>
             )}
         </aside>
