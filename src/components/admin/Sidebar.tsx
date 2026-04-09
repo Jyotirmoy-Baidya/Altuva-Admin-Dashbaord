@@ -2,17 +2,41 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useUserStore from '../../stores/userStore';
 import { ROUTES } from '../../constants/routes';
 
-interface SidebarItem {
-    name: string;
-    path: string;
-    icon: string;
-}
+interface SidebarItem { name: string; path: string; }
+interface SidebarGroup { label: string; items: SidebarItem[]; }
 
-const sidebarItems: SidebarItem[] = [
-    { name: 'Dashboard', path: ROUTES.DASHBOARD, icon: '📊' },
-    { name: 'Analytics', path: '/analytics', icon: '📈' },
-    { name: 'Landing Page', path: '/landing-page', icon: '🏠' },
-    { name: 'Products', path: '/products', icon: '📦' },
+const sidebarGroups: SidebarGroup[] = [
+    {
+        label: 'Overview',
+        items: [
+            { name: 'Dashboard', path: ROUTES.DASHBOARD },
+            { name: 'Analytics', path: '/analytics' },
+        ],
+    },
+    {
+        label: 'Store',
+        items: [
+            { name: 'Orders', path: '/orders' },
+            { name: 'Products', path: '/products' },
+            { name: 'Customers', path: '/customers' },
+        ],
+    },
+    {
+        label: 'Pricing',
+        items: [
+            { name: 'Taxes', path: '/taxes' },
+            { name: 'Delivery Charges', path: '/delivery-charges' },
+            { name: 'Discounts', path: '/discounts' },
+        ],
+    },
+    {
+        label: 'Content',
+        items: [
+            { name: 'Landing Page', path: '/landing-page' },
+            { name: 'Spotlights', path: '/spotlights' },
+            { name: "People's Choice", path: '/popular-sections' },
+        ],
+    },
 ];
 
 function Sidebar() {
@@ -52,42 +76,40 @@ function Sidebar() {
                 Altuva Admin
             </div>
 
-            {/* Navigation Items */}
-            <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {sidebarItems.map((item) => {
-                    const isActive = location.pathname === item.path;
-                    return (
-                        <Link
-                            key={item.path}
-                            to={item.path}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '12px',
-                                padding: '12px 20px',
-                                textDecoration: 'none',
-                                color: 'white',
-                                backgroundColor: isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
-                                borderLeft: isActive ? '3px solid white' : '3px solid transparent',
-                                transition: 'all 0.2s',
-                            }}
-                            onMouseEnter={(e) => {
-                                if (!isActive) {
-                                    e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                                }
-                            }}
-                            onMouseLeave={(e) => {
-                                if (!isActive) {
-                                    e.currentTarget.style.backgroundColor = 'transparent';
-                                }
-                            }}
-                        >
-                            <span style={{ fontSize: '14px', fontWeight: isActive ? '600' : '400' }}>
-                                {item.name}
-                            </span>
-                        </Link>
-                    );
-                })}
+            {/* Navigation Groups */}
+            <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
+                {sidebarGroups.map((group) => (
+                    <div key={group.label} style={{ marginBottom: '8px' }}>
+                        <div style={{ padding: '6px 20px 4px', fontSize: '10px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                            {group.label}
+                        </div>
+                        {group.items.map((item) => {
+                            const isActive = location.pathname === item.path;
+                            return (
+                                <Link
+                                    key={item.path}
+                                    to={item.path}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        padding: '9px 20px',
+                                        textDecoration: 'none',
+                                        color: 'white',
+                                        backgroundColor: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
+                                        borderLeft: isActive ? '3px solid white' : '3px solid transparent',
+                                        transition: 'all 0.15s',
+                                        fontSize: '13px',
+                                        fontWeight: isActive ? 600 : 400,
+                                    }}
+                                    onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)'; }}
+                                    onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.backgroundColor = 'transparent'; }}
+                                >
+                                    {item.name}
+                                </Link>
+                            );
+                        })}
+                    </div>
+                ))}
             </nav>
 
             {/* User Info at Bottom */}

@@ -10,6 +10,7 @@ export interface HeroBanner {
     cta_button_color: string;
     cta_button_text_color: string;
     cta_button_text?: string;
+    cta_button_url?: string;
     is_active: boolean;
     created_at: string;
     updated_at: string;

@@ -25,6 +25,7 @@ function HeroBannerForm({ onSubmit, onCancel, initialData, isLoading }: HeroBann
         cta_button_color: initialData?.cta_button_color || '#181818',
         cta_button_text_color: initialData?.cta_button_text_color || '#FFFFFF',
         cta_button_text: initialData?.cta_button_text || '',
+        cta_button_url: initialData?.cta_button_url || '/products',
         is_active: initialData?.is_active ?? true,
     });
 
@@ -58,6 +59,7 @@ function HeroBannerForm({ onSubmit, onCancel, initialData, isLoading }: HeroBann
         data.append('cta_button_color', formData.cta_button_color);
         data.append('cta_button_text_color', formData.cta_button_text_color);
         data.append('cta_button_text', formData.cta_button_text);
+        data.append('cta_button_url', formData.cta_button_url);
         data.append('is_active', String(formData.is_active));
 
         await onSubmit(data);
@@ -219,6 +221,29 @@ function HeroBannerForm({ onSubmit, onCancel, initialData, isLoading }: HeroBann
                         }}
                         placeholder="e.g., Get Started"
                     />
+                </div>
+
+                {/* CTA Button URL */}
+                <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', fontWeight: '500' }}>
+                        CTA Button URL
+                    </label>
+                    <input
+                        type="text"
+                        value={formData.cta_button_url}
+                        onChange={(e) => setFormData({ ...formData, cta_button_url: e.target.value })}
+                        style={{
+                            width: '100%',
+                            padding: '12px',
+                            fontSize: '14px',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: '4px',
+                        }}
+                        placeholder="e.g., /products or https://example.com"
+                    />
+                    <p style={{ marginTop: '4px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                        Use a relative path (e.g. /products) or full URL
+                    </p>
                 </div>
 
                 {/* CTA Button Colors */}

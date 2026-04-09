@@ -8,6 +8,13 @@ import DashboardPage from './pages/DashboardPage';
 import AnalyticsPage from './pages/AnalyticsPage';
 import LandingPageCms from './pages/LandingPageCms';
 import ProductsPage from './pages/ProductsPage';
+import CustomersPage from './pages/CustomersPage';
+import TaxesPage from './pages/TaxesPage';
+import DeliveryChargesPage from './pages/DeliveryChargesPage';
+import DiscountsPage from './pages/DiscountsPage';
+import SpotlightsPage from './pages/SpotlightsPage';
+import PopularSectionsPage from './pages/PopularSectionsPage';
+import OrdersPage from './pages/OrdersPage';
 import useUserStore from './stores/userStore';
 import { ROUTES } from './constants/routes';
 
@@ -33,6 +40,13 @@ function App() {
                     <Route path="/analytics" element={<AnalyticsPage />} />
                     <Route path="/landing-page" element={<LandingPageCms />} />
                     <Route path="/products" element={<ProductsPage />} />
+                    <Route path="/customers" element={<CustomersPage />} />
+                    <Route path="/taxes" element={<TaxesPage />} />
+                    <Route path="/delivery-charges" element={<DeliveryChargesPage />} />
+                    <Route path="/discounts" element={<DiscountsPage />} />
+                    <Route path="/spotlights" element={<SpotlightsPage />} />
+                    <Route path="/popular-sections" element={<PopularSectionsPage />} />
+                    <Route path="/orders" element={<OrdersPage />} />
                 </Route>
 
                 {/* Default route - Redirect to dashboard */}
