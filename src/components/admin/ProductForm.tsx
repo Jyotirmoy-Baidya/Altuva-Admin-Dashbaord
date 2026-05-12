@@ -1,4 +1,5 @@
 import { useState, useRef, type FormEvent, type ChangeEvent } from 'react';
+import toast from 'react-hot-toast';
 import type { Product } from '../../types/cms';
 
 interface ProductFormProps {
@@ -167,8 +168,26 @@ function ProductForm({ onSubmit, onCancel, initialData, isLoading }: ProductForm
         setGalleryPreviews(prev => prev.filter((_, i) => i !== index));
     };
 
+    const validate = (): { ok: boolean; message: string; tab: number } => {
+        if (!form.name.trim()) return { ok: false, message: 'Product name is required', tab: 0 };
+        if (!form.category.trim()) return { ok: false, message: 'Category is required', tab: 0 };
+        if (!form.brand.trim()) return { ok: false, message: 'Brand is required', tab: 0 };
+        if (!form.price) return { ok: false, message: 'Price (MRP) is required', tab: 1 };
+        if (!imageFile && !previewUrl) return { ok: false, message: 'Primary image is required', tab: 2 };
+        if (!form.description.trim()) return { ok: false, message: 'Description is required', tab: 3 };
+        return { ok: true, message: '', tab: 0 };
+    };
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
+        const check = validate();
+        if (!check.ok) {
+            setActiveTab(check.tab);
+            toast.error(check.message);
+            return;
+        }
+
         const data = new FormData();
 
         if (imageFile) data.append('primary_image', imageFile);
