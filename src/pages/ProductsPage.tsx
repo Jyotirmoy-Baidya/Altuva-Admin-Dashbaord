@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import ProductForm from '../components/admin/ProductForm';
 import ProductList from '../components/admin/ProductList';
 import { getAllProducts, createProduct, updateProduct, deleteProduct } from '../apis/productApi';
@@ -12,15 +13,23 @@ function ProductsPage() {
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+
+    const getErrMsg = (e: unknown, fallback: string) => {
+        if (e && typeof e === 'object' && 'response' in e) {
+            const res = (e as { response?: { data?: { message?: string } } }).response;
+            if (res?.data?.message) return res.data.message;
+        }
+        if (e instanceof Error) return e.message;
+        return fallback;
+    };
 
     const fetchProducts = async () => {
         setIsFetching(true);
         try {
             const res = await getAllProducts();
             if (res.success && res.data) setProducts(res.data);
-        } catch {
-            setError('Failed to load products');
+        } catch (e) {
+            toast.error(getErrMsg(e, 'Failed to load products'));
         } finally {
             setIsFetching(false);
         }
@@ -32,14 +41,16 @@ function ProductsPage() {
 
     const handleCreate = async (formData: FormData) => {
         setIsLoading(true);
+        const toastId = toast.loading('Creating product...');
         try {
             const res = await createProduct(formData);
             if (res.success && res.data) {
                 setProducts([res.data, ...products]);
                 setView('list');
+                toast.success('Product created successfully!', { id: toastId });
             }
-        } catch {
-            setError('Failed to create product');
+        } catch (e) {
+            toast.error(getErrMsg(e, 'Failed to create product'), { id: toastId });
         } finally {
             setIsLoading(false);
         }
@@ -48,15 +59,17 @@ function ProductsPage() {
     const handleUpdate = async (formData: FormData) => {
         if (!editingProduct) return;
         setIsLoading(true);
+        const toastId = toast.loading('Updating product...');
         try {
             const res = await updateProduct(editingProduct.id, formData);
             if (res.success && res.data) {
                 setProducts(products.map(p => p.id === editingProduct.id ? res.data! : p));
                 setView('list');
                 setEditingProduct(null);
+                toast.success('Product updated successfully!', { id: toastId });
             }
-        } catch {
-            setError('Failed to update product');
+        } catch (e) {
+            toast.error(getErrMsg(e, 'Failed to update product'), { id: toastId });
         } finally {
             setIsLoading(false);
         }
@@ -64,11 +77,13 @@ function ProductsPage() {
 
     const handleDelete = async (id: number) => {
         if (!confirm('Delete this product?')) return;
+        const toastId = toast.loading('Deleting product...');
         try {
             await deleteProduct(id);
             setProducts(products.filter(p => p.id !== id));
-        } catch {
-            setError('Failed to delete product');
+            toast.success('Product deleted', { id: toastId });
+        } catch (e) {
+            toast.error(getErrMsg(e, 'Failed to delete product'), { id: toastId });
         }
     };
 
@@ -102,14 +117,6 @@ function ProductsPage() {
                     </button>
                 )}
             </div>
-
-            {/* Error */}
-            {error && (
-                <div style={{ padding: '12px 16px', background: '#fee2e2', color: '#dc2626', borderRadius: '8px', marginBottom: '16px', fontSize: '13px', display: 'flex', justifyContent: 'space-between' }}>
-                    {error}
-                    <button onClick={() => setError(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#dc2626' }}>×</button>
-                </div>
-            )}
 
             {/* Content */}
             {view === 'list' ? (

@@ -1,0 +1,23 @@
+name: Deploy Admin Dashboard
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH → pull & restart admin container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.PROJECT_DIR }}/altuva-admin-dashboard
+            git pull origin main
+            cd ${{ secrets.PROJECT_DIR }}
+            docker compose up --build -d admin

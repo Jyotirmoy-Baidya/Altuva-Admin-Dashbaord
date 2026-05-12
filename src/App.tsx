@@ -17,6 +17,7 @@ import PopularSectionsPage from './pages/PopularSectionsPage';
 import OrdersPage from './pages/OrdersPage';
 import useUserStore from './stores/userStore';
 import { ROUTES } from './constants/routes';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
     const { initializeAuth } = useUserStore();
@@ -27,6 +28,7 @@ function App() {
     }, [initializeAuth]);
     return (
         <BrowserRouter>
+            <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
             <Routes>
                 {/* Auth Routes - Redirect to dashboard if logged in */}
                 <Route element={<AuthLayout />}>
