@@ -48,6 +48,8 @@ function ProductsPage() {
                 setProducts([res.data, ...products]);
                 setView('list');
                 toast.success('Product created successfully!', { id: toastId });
+            } else {
+                toast.error(res.message || 'Failed to create product', { id: toastId });
             }
         } catch (e) {
             toast.error(getErrMsg(e, 'Failed to create product'), { id: toastId });
@@ -67,6 +69,8 @@ function ProductsPage() {
                 setView('list');
                 setEditingProduct(null);
                 toast.success('Product updated successfully!', { id: toastId });
+            } else {
+                toast.error(res.message || 'Failed to update product', { id: toastId });
             }
         } catch (e) {
             toast.error(getErrMsg(e, 'Failed to update product'), { id: toastId });
