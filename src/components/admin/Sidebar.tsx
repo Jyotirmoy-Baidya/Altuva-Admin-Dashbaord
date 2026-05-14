@@ -35,6 +35,7 @@ const sidebarGroups: SidebarGroup[] = [
             { name: 'Landing Page', path: '/landing-page' },
             { name: 'Spotlights', path: '/spotlights' },
             { name: "People's Choice", path: '/popular-sections' },
+            { name: 'Showcase Tea', path: '/showcase-tea' },
         ],
     },
 ];

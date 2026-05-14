@@ -14,6 +14,7 @@ import DeliveryChargesPage from './pages/DeliveryChargesPage';
 import DiscountsPage from './pages/DiscountsPage';
 import SpotlightsPage from './pages/SpotlightsPage';
 import PopularSectionsPage from './pages/PopularSectionsPage';
+import ShowcaseTeaPage from './pages/ShowcaseTeaPage';
 import OrdersPage from './pages/OrdersPage';
 import useUserStore from './stores/userStore';
 import { ROUTES } from './constants/routes';
@@ -48,6 +49,7 @@ function App() {
                     <Route path="/discounts" element={<DiscountsPage />} />
                     <Route path="/spotlights" element={<SpotlightsPage />} />
                     <Route path="/popular-sections" element={<PopularSectionsPage />} />
+                    <Route path="/showcase-tea" element={<ShowcaseTeaPage />} />
                     <Route path="/orders" element={<OrdersPage />} />
                 </Route>
 

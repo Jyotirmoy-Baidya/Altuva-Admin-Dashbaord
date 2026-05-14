@@ -28,6 +28,18 @@ export const createPopularSection = (data: object) => axiosInstance.post('/admin
 export const updatePopularSection = (id: number, data: object) => axiosInstance.put(`/admin/popular-sections/${id}`, data).then(r => r.data);
 export const deletePopularSection = (id: number) => axiosInstance.delete(`/admin/popular-sections/${id}`).then(r => r.data);
 
+// ─── Showcase Tea Tags ────────────────────────────────────────────────────────
+export const getShowcaseTeaTags = () => axiosInstance.get('/admin/showcase-tea/tags').then(r => r.data);
+export const createShowcaseTeaTag = (data: object) => axiosInstance.post('/admin/showcase-tea/tags', data).then(r => r.data);
+export const updateShowcaseTeaTag = (id: number, data: object) => axiosInstance.put(`/admin/showcase-tea/tags/${id}`, data).then(r => r.data);
+export const deleteShowcaseTeaTag = (id: number) => axiosInstance.delete(`/admin/showcase-tea/tags/${id}`).then(r => r.data);
+
+// ─── Showcase Tea Products ────────────────────────────────────────────────────
+export const getShowcaseTeaProducts = () => axiosInstance.get('/admin/showcase-tea/products').then(r => r.data);
+export const createShowcaseTeaProduct = (data: FormData) => axiosInstance.post('/admin/showcase-tea/products', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data);
+export const updateShowcaseTeaProduct = (id: number, data: FormData) => axiosInstance.put(`/admin/showcase-tea/products/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data);
+export const deleteShowcaseTeaProduct = (id: number) => axiosInstance.delete(`/admin/showcase-tea/products/${id}`).then(r => r.data);
+
 // ─── Spotlights ───────────────────────────────────────────────────────────────
 export const getSpotlights = () => axiosInstance.get('/admin/spotlights').then(r => r.data);
 export const createSpotlight = (data: FormData) => axiosInstance.post('/admin/spotlights', data, { headers: { 'Content-Type': 'multipart/form-data' } }).then(r => r.data);
